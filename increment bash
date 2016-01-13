@@ -1,0 +1,11 @@
+#!/bin/bash
+hostname > text1.log
+for i in {1..10}
+do
+  echo $i
+  echo text"$i".log
+  md5sum text"$i".log
+  sleep 5s
+  date
+  cp text"$i".log text"$(($i + 1))".log
+done
