@@ -3,6 +3,7 @@ from keystoneclient.auth.identity import v3
 from keystoneclient.v3 import client as keystone_v3
 from novaclient.v2 import client as nova_v2
 import os
+from cinderclient.v2 import client as cinder_v2
 
 def get_keystone_creds():
     d = {}
@@ -19,7 +20,11 @@ cred = get_keystone_creds()
 auth = v3.Password(**cred)
 
 session = ksc_session.Session(auth=auth)
-print "test"
 keystone = keystone_v3.Client(session=session)
 nova = nova_v2.Client(session=session)
 print nova.servers.list()
+cinder = cinder_v2.Client(session=session)
+print cinder.volumes.list()
+#print nova.servers.find(name="test").id
+#print nova.servers.find(name="test").status
+#testvm = nova.servers.create(name='minecraft-server', flavor=nova.flavors.find(name="m1.small"), image=nova.images.find(name="cirros"))
