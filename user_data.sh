@@ -2,7 +2,6 @@
 hostname > text1.log
 i=1
 while true; do
-echo text"$i".log
 md5sum text"$i".log
 sleep 5s
 date
