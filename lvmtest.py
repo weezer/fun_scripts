@@ -6,7 +6,8 @@ from keystoneclient.auth.identity import v3
 from keystoneclient.v3 import client as keystone_v3
 from novaclient.v2 import client as nova_v2
 from cinderclient.v1 import client as cinder_v1
-import os, socket, time, shutil
+from neutronclient.v2_0 import client as neutron_v2
+import os, socket, time, shutil, sys
 
 
 def get_keystone_creds():
@@ -31,48 +32,78 @@ def create_volume_from_image(img_uuid):
     img_uuid = img_uuid
     vol_name = "test"
     cinder = cinder_v1.Client(session=session)
-    cinder.volumes.list()
     myvol = cinder.volumes.create(size=10, display_name=vol_name, imageRef=img_uuid)
+    while myvol.status != u'available':
+        myvol = cinder.volumes.get(myvol.id)
+        time.sleep(5)
     return myvol
 
 
-def read_user_date(file_path='user_data.file'):
-    with open(file_path) as f:
-        return f
+def get_network_id():
+    session = get_keystone_session()
+    neutron = neutron_v2.Client(session=session)
+    if neutron.list_networks()['networks']:
+        networkd_id = neutron.list_networks()['networks'][0]['id']
+        return networkd_id
+    else:
+        return ''
 
 
-def boot_instance_from_volume(img_uuid, network_id):
+def boot_instance_from_volume(img_uuid):
     hostname = "nova:" + socket.gethostname()
     session = get_keystone_session()
+    print "get keystone session"
     nova = nova_v2.Client(session=session)
+    print "get the bootable volume, may need some time."
     block_dev_mapping = {'vda': create_volume_from_image(img_uuid).id}
-    nics = [{'net-id': network_id}]
-    instance = nova.servers.create(name="python-test3", image='', block_device_mapping=block_dev_mapping,
-                                   flavor=4, nics=nics, userdata=read_user_date(), availability_zone=hostname)
-    return instance
+    print "get network"
+    network_id = get_network_id()
+    with open('user_data.file') as f:
+        print "read user_data.file"
+        if network_id:
+            nics = [{'net-id': network_id}]
+            instance = nova.servers.create(name="br-storage-test", image='', block_device_mapping=block_dev_mapping,
+                                           flavor=4, nics=nics, userdata=f, availability_zone=hostname)
+        else:
+            instance = nova.servers.create(name="br-storage-test", image='', block_device_mapping=block_dev_mapping,
+                                           flavor=4, userdata=f, availability_zone=hostname)
+        print "create instance"
+        return instance
 
 
 def logfile_analyzer(filename):
     filename = filename
-    file = open(filename)
+    f = open(filename)
     md5code = ''
     md5check = ''
+    print "analysing logs now, will quit if there are an md5 mis-match or just click CTRL+C to quit"
     while 1:
-        where = file.tell()
-        line = file.readline()
+        where = f.tell()
+        line = f.readline()
         if not line:
             time.sleep(1)
-            file.seek(where)
+            f.seek(where)
         else:
-            if line.containes('text1.log'):
+            if 'text1.log' in line:
                 md5code = line[:32]
                 md5check = True
+                print md5code
                 continue
-            if md5check and line.contains('text'):
+            if md5check and 'text' in line:
                 if md5code == line[:32]:
                     continue
                 else:
-                    print "found error"
+                    print "found error : " + where
                     break
     shutil.copy(filename, '/var/log/lvmtest.log')
+
+
+def main(image_uuid):
+    instance = boot_instance_from_volume(image_uuid)
+    time.sleep(10)
+    logfile_analyzer('/var/lib/nova/instances/' + str(instance.id) + '/console.log')
+
+
+if __name__ == "__main__":
+    main(str(sys.argv[1]))
 
