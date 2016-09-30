@@ -1,4 +1,14 @@
 class Solution(object):
+    def permutation(self, nums):
+        result = []
+        import itertools
+        for i in itertools.combinations(nums, 3):
+            if sum(i) == 0:
+                if sorted(list(i)) not in result:
+                    result.append(sorted(list(i)))
+        return result
+
+
     def threeSum(self, nums):
         """
         :type nums: List[int]
@@ -46,5 +56,8 @@ if __name__ == "__main__":
     q9 = [-4,-2,1,-5,-4,-4,4,-2,0,4,0,-2,3,1,-5,0]
     q10 = [0,1,0,0]
     q11 = [-2,0,1,1,2]
+    q12 = [-1,0,1,2,-1,-4]
+    q13 = [1,-1,-1,0]
     s = Solution()
-    print s.threeSum(q11)
+    # print s.threeSum(q11)
+    print s.permutation(q13)
