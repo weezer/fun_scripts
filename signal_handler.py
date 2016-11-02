@@ -1,12 +1,16 @@
 import signal
 import sys
 import time
+class test(object):
+    def test(self):
+        print self.returnstack([])
 
-def signal_handler(signal, frame):
-    print 'You pressed Ctrl+C!'
-    sys.exit(0)
+    def returnstack(self, nlist):
+        for i in range(5):
+            nlist.append(i)
+        print nlist
+        return nlist
 
-signal.signal(signal.SIGINT, signal_handler)
-print 'Press Ctrl+C'
-while True:
-    time.sleep(1)
+if __name__ == "__main__":
+    s = test()
+    s.test()

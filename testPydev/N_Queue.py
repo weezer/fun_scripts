@@ -5,28 +5,42 @@ class Solution(object):
         :rtype: List[List[str]]
         """
         self.n = n
+        self.collect = []
         output_stack = []
         for i in range(n):
-            print self.putqueue([i])
+            self.putqueue([i])
+        print len(self.collect)
+        for i in self.collect:
+            ret_matrix = self.generatgraphic(i)
+            output_stack.append(ret_matrix[:])
+        return output_stack
 
-    def putqueue(self, Qstack):
-        put_Q = len(Qstack)
+    def generatgraphic(self, lst):
+        dotmatrix = []
+        for i in lst:
+            dotline = ["." for x in range(self.n)]
+            dotline[i] = "Q"
+            dotline = "".join(dotline)
+            dotmatrix.append(dotline[:])
+        ",".join(dotmatrix)
+        return dotmatrix
+
+    def putqueue(self, qstack):
+        put_Q = len(qstack)
         if put_Q < self.n:
             for i in range(self.n):
                 flag = True
-                for k, v in enumerate(Qstack):
+                for k, v in enumerate(qstack):
                     if abs(put_Q - k) == abs(i - v) or v == i:
                         flag = False
                         break
                 if flag:
-                    nextStack = Qstack[:]
-                    nextStack.append(i)
-                    self.putqueue(nextStack)
+                    nextstack = qstack[:]
+                    nextstack.append(i)
+                    self.putqueue(nextstack)
         else:
-            # print Qstack
-            return Qstack
-
+            self.collect.append(qstack[:])
 
 if __name__ == "__main__":
     s = Solution()
-    s.solveNQueens(4)
+    print s.solveNQueens(5)
