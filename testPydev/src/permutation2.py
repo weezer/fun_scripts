@@ -17,7 +17,7 @@ class Solution:
             for i in range(len(num)):
                 if i > 0 and num[i] == num[i - 1]:
                     continue
-                self.permutation( temp + [num[i]], num[:i] + num[i + 1:])
+                self.permutation(temp + [num[i]], num[:i] + num[i + 1:])
 
 if __name__ == "__main__":
     s = Solution()
