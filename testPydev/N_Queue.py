@@ -10,6 +10,7 @@ class Solution(object):
         for i in range(n):
             self.putqueue([i])
         print len(self.collect)
+        print self.collect
         for i in self.collect:
             ret_matrix = self.generatgraphic(i)
             output_stack.append(ret_matrix[:])
@@ -43,4 +44,4 @@ class Solution(object):
 
 if __name__ == "__main__":
     s = Solution()
-    print s.solveNQueens(5)
+    print s.solveNQueens(8)
