@@ -39,6 +39,7 @@ class Solution(object):
 if  __name__ == "__main__":
     L2 = [6,6,6,6,6,6]
     L3 = []
-    L4 = [2,2,2,2,2,2]
+    L4 = [2,2,2,2,2,2,2,2]
+    L5 = [5,5,5,5,4,4,4,4,3,3,3,3]
     s = Solution()
-    print s.square(L3)
+    print s.square(L5)
