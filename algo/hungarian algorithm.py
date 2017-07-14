@@ -57,11 +57,11 @@ def find_maximum_pair(lst):
         g.add_edge(i[0], i[1])
     pair_g = [-1 for x in range(start_points)]
 
-    for k in g.get_vertices().values():
-        print g.get_vertex(k.get_id())
+    # for k in g.get_vertices().values():
+    #     print g.get_vertex(k.get_id())
 
     for i in range(1, start_points + 1):
-        find_augment_path(g, pair_g, i)
+        find_augment_path(g, pair_g, i, [])
 
     return pair_g
 
@@ -72,25 +72,37 @@ def check_valid_neighbor(g1, neighbor):
             return i.get_id()
 
 
-def find_augment_path(g1, g2, point):
+def find_augment_path(g1, g2, point, visited):
     vx = g1.get_vertex(point)
     # print str(type(vx)) + str(vx)
-    # print g2
     vn = vx.get_neighbor()
     valid_neighbor = check_valid_neighbor(g2, vn.keys())
     if valid_neighbor:
         g2[point - 1] = valid_neighbor
         return True
     for i in vn.keys():
-        print str(i) + " outside " + str(point)
-        if g2.index(i.get_id()) + 1 != point and find_augment_path(g1, g2, g2.index(i.get_id()) + 1):
+        # print str(i) + " outside " + str(point)
+        if i in visited:
+            continue
+        else:
+            visited.append(i)
+        if g2.index(i.get_id()) + 1 != point and find_augment_path(g1, g2, g2.index(i.get_id()) + 1, visited):
             g2[point - 1] = i.get_id()
             return True
     return False
 
 
 if __name__ == "__main__":
-    lst = [[3, 6], [1,4], [1,5], [2,5], [2,6], [3,4]]
+    in_date = """5 10 1 7 1 8 2 6 2 9 2 10 3 7 3 8 4 7 4 8 5 10 -1 -1""".split(' ')
+    # in_date = "3 6 1 4 1 5 2 5 2 6 3 4 -1 -1 ".split(" ")
+    len_in = len(in_date)
+    lst = []
+    for i in range(0, len_in, 2):
+        if int(in_date[i]) == -1:
+            in_date[i]
+            break
+        lst.append([int(in_date[i]), int(in_date[i + 1])])
+
     pair = find_maximum_pair(lst)
-    for i in pair:
-        print i
+    pair = filter(lambda x: x != -1, pair)
+    print pair
