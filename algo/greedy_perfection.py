@@ -1,3 +1,4 @@
+# assign a value to the letter, find the maximum value to the whole string,
 def greedy(input):
     rating = 26
     pair = {}
