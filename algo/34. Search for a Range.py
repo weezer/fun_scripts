@@ -38,8 +38,6 @@ class Solution(object):
                     end = mid
                     break
                 left = mid
-            if nums[mid] < target:
-                left = mid
         return [start, end]
 
 if __name__ == "__main__":
