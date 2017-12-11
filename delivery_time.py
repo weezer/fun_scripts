@@ -7,8 +7,12 @@ def delivery_time(input_string):
     for i in range(len_input):
         split_string.append(map(int, input_string[i].split("-")))
     if len_input == 1:
-        return split_string[0][1]
-    print split_string
+        if split_string[0][1] <= 50:
+            return split_string[0][1]
+        else:
+            return False
+
+    # print split_string
     matrics[0][0] = split_string[0][1]
     line_num = 0
     current = 1
@@ -23,12 +27,17 @@ def delivery_time(input_string):
             else:
                 steps = matrics[line_num][1] + split_string[current][1] - matrics[line_num][0] + 1
         else:
-            steps += matrics[current][1] - matrics[prev][1]
+            steps += split_string[current][1] - split_string[prev][1] + 1
+        if split_string[current][1] <= matrics[line_num][0] or split_string[current][1] > 50:
+            # print matrics
+            # print split_string[current][1]
+            return False
         matrics[line_num][0] = split_string[current][1]
         matrics[line_num][1] = steps
         prev += 1
         current += 1
+        # print steps
     return steps
 
 
-print delivery_time(['1-3','2-1','1-6','2-5'])
+print delivery_time(['1-5', '1-155'])
