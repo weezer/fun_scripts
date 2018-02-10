@@ -1,0 +1,10 @@
+{"type":"NEW","symbol":"AAPL","order_id":1,"side":"BUY","quantity":1700,"time":"2017-03-15T10:15:20.178562"}
+{"type":"ORDER_ACK","order_id":1,"time":"2017-03-15T10:15:20.178725"}
+{"type":"FILL","order_id":1,"filled_quantity":1700,"remaining_quantity":0,"time":"2017-03-15T10:15:20.178839"}
+{"type":"NEW","symbol":"AAPL","order_id":2,"side":"SELL","quantity":900,"time":"2017-03-15T10:15:20.178956"}
+{"type":"CANCEL","order_id":2,"time":"2017-03-15710:15:20.179069"}
+{"type":"ORDER_ACK","order_id":2,"time":"2017-03-1ST10:15:20.179166"}
+{"type":"FILL","order_id":2,"filled_quantity":900,"remaining_quantity":0,"time":"2017-03-1ST10:15:20.179271"}
+{"type":"CANCEL_REJECT","order_id":2,"reason":"ORDER_ID_UNKNOWN","time": "2017-03-15T10:15:20.179373"}
+{"type":"NEW","symbol":"MSFT","order_id":3,"side":"SELL","quantity":1900,"time":"2017-03-15T10:15:20.179572"}
+{"type":"ORDER_ACK","order_id":3,"time":"2017-03-15T10:15:20.179848"}

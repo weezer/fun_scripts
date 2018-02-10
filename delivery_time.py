@@ -40,4 +40,4 @@ def delivery_time(input_string):
     return steps
 
 
-print delivery_time(['1-5', '1-155'])
+print delivery_time(['1-15', '1-5'])
