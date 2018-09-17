@@ -24,7 +24,31 @@ class Solution(object):
                         max_len = i-j+2
         return rtr_answer
 
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        len_s = len(s)
+        if len_s <= 1:
+            return len_s
+        matrix_s = [[0 for i in range(len_s)] for i in range(len_s)]
+        max_num = 0
+        r_answer = s[0]
+        for i in range(len_s):
+            for j in range(i, -1, -1):
+                if i == j:
+                    matrix_s[i][j] = 1
+                    continue
+                if s[i] == s[j] and (matrix_s[i-1][j+1] != 0 or matrix_s[i][j+1] != 0):
+                    matrix_s[i][j] = matrix_s[i-1][j+1] + 2
+                    if max_num < matrix_s[i][j]:
+                        max_num = matrix_s[i][j]
+                        r_answer = s[j:j+max_num]
+        print matrix_s
+        return r_answer
 
 if __name__ == "__main__":
     s = Solution()
-    print s.longestPalindrome("abcaa")
+    print s.longestPalindrome("cbbd")

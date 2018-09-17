@@ -35,4 +35,4 @@ class Solution(object):
     
 if __name__ == "__main__":
     s = Solution()
-    print s.threeSum([-2,0,3,-1,4,0,3,4,1,1,1,-3,-5,4,0])
+    print s.threeSum([-3, -3, 0, 0,3])

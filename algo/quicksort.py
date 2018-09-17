@@ -1,39 +1,37 @@
 def quicksort(nums, start, end):
-    if end - start < 1:
+    if start >= end:
         return
     pivot = nums[start]
     left = start + 1
     right = end
     while left < right:
-        if nums[left] <= pivot and nums[right] > pivot:
+        if nums[right] < pivot <= nums[left] :
+            nums[left], nums[right] = nums[right], nums[left]
             left += 1
             right -= 1
-        elif nums[left] <= pivot and nums[right] <= pivot:
+        elif nums[right] >= pivot > nums[left]:
             left += 1
-        elif nums[left] > pivot and nums[right] <= pivot:
-            temp = nums[left]
-            nums[left] = nums[right]
-            nums[right] = temp
-            left += 1
+            right -= 1
+        elif nums[left] >= pivot and nums[right] >= pivot:
             right -= 1
         else:
-            right -= 1
+            left += 1
+    if left == right and nums[left] < pivot:
+        nums[start], nums[left] = nums[left], nums[start]
     if left == right and nums[left] > pivot:
-        left = left - 1
-        temp = nums[start]
-        nums[start] = nums[left]
-        nums[left] = temp
-    elif left == right and nums[left] <= pivot:
-        temp = nums[start]
-        nums[start] = nums[left]
-        nums[left] = temp
-    else:
-        left = left - 1
-        temp = nums[start]
-        nums[start] = nums[left]
-        nums[left] = temp
-    quicksort(nums, start, left-1)
-    quicksort(nums, right, end)
-    print nums
+        nums[start], nums[left-1] = nums[left-1], nums[start]
+        left -= 1
+    if left > right:
+        nums[start], nums[left-1] = nums[left-1], nums[start]
+        left -= 1
+    quicksort(nums, start, left - 1)
+    quicksort(nums, left + 1, end)
 
-quicksort([4,3], 0, len([4,3]) - 1)
+a = [i for i in range(2,-1,-1)]
+a = [1,5,6,3,1,8,6]
+print a
+quicksort(a, 0, len(a) - 1)
+print a
+
+import collections
+collections.deque()
